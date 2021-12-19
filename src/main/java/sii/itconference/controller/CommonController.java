@@ -1,13 +1,15 @@
 package sii.itconference.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 import sii.itconference.model.Block;
 import sii.itconference.model.Lecture;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import sii.itconference.model.dto.ReservationDto;
+import sii.itconference.model.dto.UserDto;
 import sii.itconference.services.IBlockService;
 import sii.itconference.services.ILectureService;
+import sii.itconference.services.IReservationService;
+import sii.itconference.services.IUserService;
 
 import java.util.List;
 
@@ -16,12 +18,16 @@ import java.util.List;
 public class CommonController {
 
     private ILectureService lectureService;
+    private IReservationService reservationService;
     private IBlockService blockService;
+    private IUserService userService;
 
     @Autowired
-    public CommonController(ILectureService lectureService, IBlockService blockService) {
+    public CommonController(ILectureService lectureService, IReservationService reservationService, IBlockService blockService, IUserService userService) {
         this.lectureService = lectureService;
+        this.reservationService = reservationService;
         this.blockService = blockService;
+        this.userService = userService;
     }
 
     @GetMapping
@@ -34,4 +40,16 @@ public class CommonController {
         return this.lectureService.findAll();
     }
     //TODO mapping for lectures of each block
+
+    @GetMapping("/users")
+    public List<UserDto> getUsers() {
+        return this.userService.getAllUsers();
+    }
+
+    @PostMapping("/lectures/reserve")
+    public void saveReservation(@RequestBody ReservationDto reservationDto) {
+        //TODO check if seats > 0
+        this.reservationService.saveReservation(reservationDto);
+    }
+
 }

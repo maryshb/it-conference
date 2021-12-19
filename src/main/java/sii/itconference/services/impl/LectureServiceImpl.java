@@ -22,4 +22,14 @@ public class LectureServiceImpl implements ILectureService {
     public List<Lecture> findAll() {
         return lectureRepository.findAll();
     }
+
+    @Override
+    public Lecture getLectureByLectureId(Long id) {
+       return lectureRepository.findLectureByLectureId(id);
+    }
+
+    @Override
+    public void saveLecture(Lecture lecture) {
+        lectureRepository.save(lecture);
+    }
 }

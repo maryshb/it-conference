@@ -14,6 +14,8 @@ public class Reservation {
     @OneToOne
     private User user;
     @OneToOne
+    private Block block;
+    @OneToOne
     private Lecture lecture;
 }
 

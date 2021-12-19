@@ -23,4 +23,8 @@ public class BlockServiceImpl implements IBlockService {
         return blockRepository.findAll();
     }
 
+    @Override
+    public Block getBlockByBlockId(Long blockId) {
+        return blockRepository.getById(blockId);
+    }
 }

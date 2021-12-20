@@ -1,0 +1,48 @@
+INSERT INTO t_block (block_id, start_time, end_time, duration) VALUES
+(1, TIMESTAMP '2021-06-01 10:00:00',TIMESTAMP '2021-06-01 11:45:00','1:45');
+
+INSERT INTO t_block (block_id, start_time, end_time, duration) VALUES
+(2, TIMESTAMP '2021-06-01 12:00:00',TIMESTAMP '2021-06-01 13:45:00','1:45');
+
+INSERT INTO t_block (block_id, start_time, end_time, duration) VALUES
+(3, TIMESTAMP '2021-06-01 14:00:00',TIMESTAMP '2021-06-01 15:45:00','1:45');
+
+-------------------------------------------------
+INSERT INTO t_lecture (lecture_id, name, description, seats, t_block) VALUES
+(1, 'Programowanie w języku Java', 'Opis prelekcji', 5, 1);
+
+INSERT INTO t_lecture (lecture_id, name, description, seats, t_block) VALUES
+(2, 'Cybersecurity - podstawy cyberbezpieczeństwa', 'Opis prelekcji', 5, 1);
+
+INSERT INTO t_lecture (lecture_id, name, description, seats, t_block) VALUES
+(3, 'Bazy danych - wstęp do relacyjnych baz danych', 'Opis prelekcji', 5, 1);
+
+INSERT INTO t_lecture (lecture_id, name, description, seats, t_block) VALUES
+(4, 'Programowanie w języku Python', 'Opis prelekcji', 5, 2);
+
+INSERT INTO t_lecture (lecture_id, name, description, seats, t_block) VALUES
+(5, 'Cybersecurity - bezpieczeństwo aplikacji webowych', 'Opis prelekcji', 5, 2);
+
+INSERT INTO t_lecture (lecture_id, name, description, seats, t_block) VALUES
+(6, 'Bazy danych - podstawy języka SQL', 'Opis prelekcji', 5, 2);
+
+INSERT INTO t_lecture (lecture_id, name, description, seats, t_block) VALUES
+(7, 'Programowanie w języku PHP', 'Opis prelekcji', 5, 3);
+
+INSERT INTO t_lecture (lecture_id, name, description, seats, t_block) VALUES
+(8, 'Cybersecurity - fuzz testing', 'Opis prelekcji', 5, 3);
+
+INSERT INTO t_lecture (lecture_id, name, description, seats, t_block) VALUES
+(9, 'Bazy danych - podstawy projektowania baz danych', 'Opis prelekcji', 5, 3);
+
+-------------------------------------------------
+
+INSERT INTO t_user (user_id, username, email) VALUES
+(1, 'jannowak', 'jannowak@email.com');
+
+
+INSERT INTO t_user (user_id, username, email) VALUES
+(2, 'adamkowalski', 'adamkowalski@email.com');
+
+INSERT INTO t_reservation(reservation_id, block_block_id, user_user_id, lecture_lecture_id) VALUES
+(1, 1, 1, 1);

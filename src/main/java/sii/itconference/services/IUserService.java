@@ -8,7 +8,10 @@ import java.util.List;
 
 public interface IUserService {
     void updateEmail(UserDto userDto);
+
     List<UserDto> getAllUsers();
+
     User getUserByUsername(String username);
+
     void saveUser(ReservationDto ReservationDto);
 }

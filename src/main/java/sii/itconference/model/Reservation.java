@@ -4,7 +4,6 @@ import lombok.Data;
 
 import javax.persistence.*;
 
-
 @Data
 @Entity(name = "t_reservation")
 public class Reservation {
@@ -18,4 +17,3 @@ public class Reservation {
     @OneToOne
     private Lecture lecture;
 }
-

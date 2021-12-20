@@ -7,7 +7,6 @@ import sii.itconference.model.Reservation;
 import sii.itconference.model.User;
 import sii.itconference.model.dto.ReservationDto;
 import sii.itconference.model.dto.UserDto;
-import sii.itconference.repository.IUserRepository;
 import sii.itconference.services.IReservationService;
 import sii.itconference.services.IUserService;
 
@@ -15,17 +14,15 @@ import java.util.List;
 
 
 @RestController
+@RequestMapping("/api/user")
 public class UserController {
 
-
-    private IUserRepository userRepository;
     private IReservationService reservationService;
     private IUserService userService;
     private ModelMapper modelMapper;
 
     @Autowired
-    public UserController(IUserRepository userRepository, IReservationService reservationService, IUserService userService, ModelMapper modelMapper) {
-        this.userRepository = userRepository;
+    public UserController(IReservationService reservationService, IUserService userService, ModelMapper modelMapper) {
         this.reservationService = reservationService;
         this.userService = userService;
         this.modelMapper = modelMapper;
@@ -33,9 +30,17 @@ public class UserController {
 
     @PostMapping("/schedule")
     public List<Reservation> getSchedule(@RequestBody UserDto userDto) {
-        User user = this.userRepository.findByUsername(userDto.getUsername()); //TODO DO POPRAWY (uzycie service)
+        User user = this.userService.getUserByUsername(userDto.getUsername()); //TODO DO POPRAWY (uzycie service)
 
-        return this.reservationService.findReservationByUser(user);
+        return this.reservationService.findReservationsByUser(user);
+    }
+
+    //todo mapping z wykorzystaniem loginu i nazwy wykładu
+
+    @DeleteMapping("/schedule/cancel")
+    public void cancelReservation(@RequestBody ReservationDto reservationDto) {
+        this.reservationService.cancelReservation(reservationDto);
+        //todo response entity
     }
 
     @PatchMapping("/edit-form")
@@ -44,7 +49,7 @@ public class UserController {
         //TODO NPE !
         userService.updateEmail(userDto);
 
-        User user = this.userRepository.findByUsername(userDto.getUsername());
+        User user = this.userService.getUserByUsername(userDto.getUsername());
         userDto = modelMapper.map(user, UserDto.class);
 
         // userRepository.updateEmail(ofNullable(user).map(User::getEmail);
@@ -53,12 +58,8 @@ public class UserController {
     }
 
     //todo response entity
-    //todo mapping z wykorzystaniem loginu i nazwy wykładu
 
 
-    @DeleteMapping("/schedule/cancel")
-    public void cancelReservation(@RequestBody ReservationDto reservationDto) {
-        this.reservationService.cancelReservation(reservationDto);
-        //todo response entity
-    }
+
+
 }

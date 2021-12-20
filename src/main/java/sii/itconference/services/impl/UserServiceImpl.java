@@ -48,10 +48,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public void saveUser(ReservationDto reservationDto) {
-        //TODO 1. sprawdzic czy istnieje
-        //TODO 2. zapisac
-
-        if (!userRepository.existsUserByUsername(reservationDto.getUsername())) {
+        if (!userRepository.existsUserByUsername(reservationDto.getUsername())) { // TODO zabezpieczenie przed istniejącym emailem
             User user = modelMapper.map(reservationDto, User.class);
             userRepository.save(user);
         } else {

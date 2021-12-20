@@ -37,8 +37,8 @@ public class ReservationServiceImpl implements IReservationService {
     }
 
     @Override
-    public List<Reservation> findReservationByUser(User user) {
-        return this.reservationRepository.findReservationByUser(user);
+    public List<Reservation> findReservationsByUser(User user) {
+        return this.reservationRepository.findReservationsByUser(user);
     }
 
     @Override
@@ -61,7 +61,7 @@ public class ReservationServiceImpl implements IReservationService {
             Lecture lecture = lectureService.getLectureByLectureId(reservationDto.getLectureId());
             int seats = lecture.getSeats();
 
-            //SPRAWDZ CZY  W REZERWACJACH NIE MA JUZ TAKIEGO BLOKU
+            //TODO SPRAWDZ CZY  W REZERWACJACH NIE MA JUZ TAKIEGO BLOKU
 
             if (seats > 0) {
                 if(user.getEmail().equals(reservationDto.getEmail())) {
@@ -83,5 +83,3 @@ public class ReservationServiceImpl implements IReservationService {
         }
     }
 }
-
-

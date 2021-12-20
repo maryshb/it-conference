@@ -12,7 +12,7 @@ import java.util.List;
 @Transactional
 @Repository
 public interface IReservationRepository extends JpaRepository<Reservation, Long> {
-    List<Reservation> findReservationByUser(User user);// TODO name - reservations
+    List<Reservation> findReservationsByUser(User user);// TODO name - reservations
 
     void deleteReservationByReservationId(Long reservationId);
 

@@ -12,7 +12,7 @@ public class Lecture {
     private Long lectureId;
     private String name;
     private String description;
-    private int seats; // max 5 miejsc
+    private int seats;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "t_block")
     private Block block;

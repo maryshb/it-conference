@@ -14,7 +14,7 @@ public class Block {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long blockId;
-    private String startTime;
+    private Date startTime;
     private Date endTime;
-    private Date duration;
+    private String duration;
 }

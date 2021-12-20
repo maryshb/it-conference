@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface IBlockService {
     List<Block> findAll();
+
     Block getBlockByBlockId(Long blockId);
 }

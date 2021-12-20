@@ -8,7 +8,6 @@ import sii.itconference.services.IReservationService;
 @RequestMapping("/api/conference")
 public class ReservationController {
 
-
     private IReservationService reservationService;
 
     public ReservationController(IReservationService reservationService) {

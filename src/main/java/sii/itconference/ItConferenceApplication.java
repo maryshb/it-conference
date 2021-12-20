@@ -12,10 +12,8 @@ public class ItConferenceApplication {
         SpringApplication.run(ItConferenceApplication.class, args);
     }
 
-    //TODO przenieść do konfiguracji
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
     }
-
 }

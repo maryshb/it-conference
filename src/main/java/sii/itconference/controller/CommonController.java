@@ -35,7 +35,6 @@ public class CommonController {
     public List<Lecture> getLectures() {
         return this.lectureService.findAll();
     }
-    //TODO mapping for lectures of each block
 
     @GetMapping("/users")
     public List<UserDto> getUsers() {

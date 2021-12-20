@@ -23,9 +23,7 @@ public class EmailSenderServiceImpl {
         } finally {
             try {
                 writer.close();
-            } catch (Exception ex) {
-                System.out.println("Couldn't close the writer");
-            }
+            } catch (Exception ignored) {}
         }
     }
 

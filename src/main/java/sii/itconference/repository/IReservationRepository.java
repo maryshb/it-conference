@@ -12,9 +12,11 @@ import java.util.List;
 @Transactional
 @Repository
 public interface IReservationRepository extends JpaRepository<Reservation, Long> {
-    List<Reservation> findReservationsByUser(User user);// TODO name - reservations
+    List<Reservation> findReservationsByUser(User user);
 
     void deleteReservationByReservationId(Long reservationId);
 
     boolean existsReservationByUserAndBlock(User user, Block block);
+
+    boolean existsReservationByReservationId(Long reservationId);
 }

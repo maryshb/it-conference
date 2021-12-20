@@ -1,7 +1,8 @@
 package sii.itconference.controller;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sii.itconference.model.Reservation;
 import sii.itconference.model.User;
@@ -12,54 +13,54 @@ import sii.itconference.services.IUserService;
 
 import java.util.List;
 
-
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
 
     private IReservationService reservationService;
     private IUserService userService;
-    private ModelMapper modelMapper;
 
     @Autowired
-    public UserController(IReservationService reservationService, IUserService userService, ModelMapper modelMapper) {
+    public UserController(IReservationService reservationService, IUserService userService) {
         this.reservationService = reservationService;
         this.userService = userService;
-        this.modelMapper = modelMapper;
     }
 
     @PostMapping("/schedule")
     public List<Reservation> getSchedule(@RequestBody UserDto userDto) {
-        User user = this.userService.getUserByUsername(userDto.getUsername()); //TODO DO POPRAWY (uzycie service)
+        User user = this.userService.getUserByUsername(userDto.getUsername());
 
         return this.reservationService.findReservationsByUser(user);
     }
 
-    //todo mapping z wykorzystaniem loginu i nazwy wykładu
-
     @DeleteMapping("/schedule/cancel")
-    public void cancelReservation(@RequestBody ReservationDto reservationDto) {
-        this.reservationService.cancelReservation(reservationDto);
-        //todo response entity
+    public ResponseEntity<String> cancelReservation(@RequestBody ReservationDto reservationDto) {
+        try {
+            if (this.reservationService.existsReservationByReservationId(reservationDto.getReservationId())) {
+                this.reservationService.cancelReservation(reservationDto);
+                return new ResponseEntity<>("Reservation cancelled!", HttpStatus.OK);
+            }
+            return new ResponseEntity<>("Reservation doesn't exsist!", HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            System.out.println("Failed to cancel the reservation!");
+        }
+        return new ResponseEntity<>(
+                "Failed to cancel the reservation!",
+                HttpStatus.NOT_FOUND);
     }
 
     @PatchMapping("/edit-form")
-    public UserDto editMail(@RequestBody UserDto userDto) {
+    public ResponseEntity<String> editMail(@RequestBody UserDto userDto) {
+        try {
+            userService.updateEmail(userDto);
 
-        //TODO NPE !
-        userService.updateEmail(userDto);
-
-        User user = this.userService.getUserByUsername(userDto.getUsername());
-        userDto = modelMapper.map(user, UserDto.class);
-
-        // userRepository.updateEmail(ofNullable(user).map(User::getEmail);
-        //todo response entity
-        return userDto;
+            return new ResponseEntity<>(
+                    "User email has been modified!", HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println("The email address could not be modified!");
+        }
+        return new ResponseEntity<>(
+                "The email address could not be modified!",
+                HttpStatus.NOT_FOUND);
     }
-
-    //todo response entity
-
-
-
-
 }

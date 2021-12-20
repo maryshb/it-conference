@@ -14,4 +14,6 @@ public interface IUserService {
     User getUserByUsername(String username);
 
     void saveUser(ReservationDto ReservationDto);
+
+    boolean isUserExistByUsername(String username);
 }

@@ -9,6 +9,8 @@ import java.util.List;
 public interface IReservationService {
     List<Reservation> findReservationsByUser(User user);
 
+    boolean existsReservationByReservationId(Long reservationId);
+
     void cancelReservation(ReservationDto reservationDto);
 
     void saveReservation(ReservationDto reservationDto);

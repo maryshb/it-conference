@@ -1,6 +1,5 @@
 package sii.itconference.services.impl;
 
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,15 +24,17 @@ public class ReservationServiceImpl implements IReservationService {
     private ILectureService lectureService;
     private IBlockService blockService;
     private ModelMapper modelMapper;
+    private EmailSenderServiceImpl emailSenderService;
 
     @Autowired
     public ReservationServiceImpl(IReservationRepository reservationRepository, IUserService userService,
-                                  ILectureService lectureService, IBlockService blockService, ModelMapper modelMapper) {
+                                  ILectureService lectureService, IBlockService blockService, ModelMapper modelMapper, EmailSenderServiceImpl emailSenderService) {
         this.reservationRepository = reservationRepository;
         this.userService = userService;
         this.lectureService = lectureService;
         this.blockService = blockService;
         this.modelMapper = modelMapper;
+        this.emailSenderService = emailSenderService;
     }
 
     @Override
@@ -42,44 +43,55 @@ public class ReservationServiceImpl implements IReservationService {
     }
 
     @Override
-    public void cancelReservation(ReservationDto reservationDto) {
-        this.reservationRepository.deleteReservationByReservationId(reservationDto.getReservationId().longValue()); //TODO sprawdzić longValue() - potrzebne?
+    public boolean existsReservationByReservationId(Long reservationId) {
+        return this.reservationRepository.existsReservationByReservationId(reservationId);
     }
 
+    @Override
+    public void cancelReservation(ReservationDto reservationDto) {
+        this.reservationRepository.deleteReservationByReservationId(reservationDto.getReservationId());
+    }
 
     @Override
     public void saveReservation(ReservationDto reservationDto) {
-    //TODO sprawdzić czy blokuje baze
-        Reservation reservation = modelMapper.map(reservationDto, Reservation.class); //TODO ZOSTAJE?
-        userService.saveUser(reservationDto);
+        Reservation reservation = modelMapper.map(reservationDto, Reservation.class);
 
-        User user = userService.getUserByUsername(reservationDto.getUsername());
-        Block block = blockService.getBlockByBlockId(reservationDto.getBlockId());
+        User user = getUserForReservation(reservationDto);
 
-        if (!reservationRepository.existsReservationByUserAndBlock(user, block)) {
+        if (blockService.isLectureInBlock(reservationDto)) {
+            Block block = blockService.getBlockByBlockId(reservationDto.getBlockId());
 
-            Lecture lecture = lectureService.getLectureByLectureId(reservationDto.getLectureId());
-            int seats = lecture.getSeats();
+            if (!reservationRepository.existsReservationByUserAndBlock(user, block)) {
 
-            //TODO SPRAWDZ CZY  W REZERWACJACH NIE MA JUZ TAKIEGO BLOKU
+                Lecture lecture = lectureService.getLectureByLectureId(reservationDto.getLectureId());
 
-            if (seats > 0) {
-                if(user.getEmail().equals(reservationDto.getEmail())) {
-                    reservation.setUser(user);
-                    // TODO NPE !
-                    reservation.setLecture(lectureService.getLectureByLectureId(reservationDto.getLectureId()));
+                int seats = lecture.getSeats();
 
-                    this.reservationRepository.save(reservation);
-                    lecture.setSeats(seats - 1);
-                    this.lectureService.saveLecture(lecture);
+                if (seats > 0) {
+                    if (user.getEmail().equals(reservationDto.getEmail())) {
+                        reservation.setUser(user);
+                        reservation.setLecture(lectureService.getLectureByLectureId(reservationDto.getLectureId()));
+
+                        this.reservationRepository.save(reservation);
+                        lecture.setSeats(seats - 1);
+                        this.lectureService.saveLecture(lecture);
+                        this.emailSenderService.sendMail(user, reservation);
+                    }
+                } else {
+                    System.out.println("No seats left");
                 }
-                //TODO ZAPIS DO PLIKU (POWIADOMIENIE EMAIL)
             } else {
-                // TODO RESPONSE zamiast sout
-                System.out.println("Nie ma miejsc");
+                System.out.println("You are already signed up to this block");
             }
         } else {
-            System.out.println("Już sie zapisałeś");
+            System.out.println("There is no such a lecture in this block");
         }
+    }
+
+    private User getUserForReservation(ReservationDto reservationDto) {
+        if (!userService.isUserExistByUsername(reservationDto.getUsername())) {
+            userService.saveUser(reservationDto);
+        }
+        return userService.getUserByUsername(reservationDto.getUsername());
     }
 }

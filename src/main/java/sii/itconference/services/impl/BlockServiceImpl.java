@@ -15,9 +15,9 @@ import java.util.List;
 @Service
 public class BlockServiceImpl implements IBlockService {
 
-    private IBlockRepository blockRepository;
-    private ILectureRepository lectureRepository;
-    private ModelMapper modelMapper;
+    private final IBlockRepository blockRepository;
+    private final ILectureRepository lectureRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
     public BlockServiceImpl(IBlockRepository blockRepository, ILectureRepository lectureRepository, ModelMapper modelMapper) {

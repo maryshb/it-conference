@@ -15,9 +15,9 @@ import java.util.List;
 @RequestMapping("/api/conference")
 public class CommonController {
 
-    private ILectureService lectureService;
-    private IBlockService blockService;
-    private IUserService userService;
+    private final ILectureService lectureService;
+    private final IBlockService blockService;
+    private final IUserService userService;
 
     @Autowired
     public CommonController(ILectureService lectureService, IBlockService blockService, IUserService userService) {

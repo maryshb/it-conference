@@ -19,12 +19,12 @@ import java.util.List;
 @Service
 public class ReservationServiceImpl implements IReservationService {
 
-    private IReservationRepository reservationRepository;
-    private IUserService userService;
-    private ILectureService lectureService;
-    private IBlockService blockService;
-    private ModelMapper modelMapper;
-    private EmailSenderServiceImpl emailSenderService;
+    private final IReservationRepository reservationRepository;
+    private final IUserService userService;
+    private final ILectureService lectureService;
+    private final IBlockService blockService;
+    private final ModelMapper modelMapper;
+    private final EmailSenderServiceImpl emailSenderService;
 
     @Autowired
     public ReservationServiceImpl(IReservationRepository reservationRepository, IUserService userService,
@@ -94,4 +94,8 @@ public class ReservationServiceImpl implements IReservationService {
         }
         return userService.getUserByUsername(reservationDto.getUsername());
     }
+
+
+
+
 }

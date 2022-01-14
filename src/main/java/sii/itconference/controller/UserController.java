@@ -17,8 +17,8 @@ import java.util.List;
 @RequestMapping("/api/user")
 public class UserController {
 
-    private IReservationService reservationService;
-    private IUserService userService;
+    private final IReservationService reservationService;
+    private final IUserService userService;
 
     @Autowired
     public UserController(IReservationService reservationService, IUserService userService) {
@@ -40,7 +40,7 @@ public class UserController {
                 this.reservationService.cancelReservation(reservationDto);
                 return new ResponseEntity<>("Reservation cancelled!", HttpStatus.OK);
             }
-            return new ResponseEntity<>("Reservation doesn't exsist!", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Reservation doesn't exist!", HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             System.out.println("Failed to cancel the reservation!");
         }

@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 public class LectureServiceImpl implements ILectureService {
 
-    private ILectureRepository lectureRepository;
+    private final ILectureRepository lectureRepository;
 
     @Autowired
     public LectureServiceImpl(ILectureRepository lectureRepository) {

@@ -16,8 +16,8 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements IUserService {
 
 
-    private IUserRepository userRepository;
-    private ModelMapper modelMapper;
+    private final IUserRepository userRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
     public UserServiceImpl(IUserRepository userRepository, ModelMapper modelMapper) {
